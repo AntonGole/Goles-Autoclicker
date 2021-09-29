@@ -1,15 +1,19 @@
+from random import *
 from tkinter import *
-from PIL import ImageGrab
 from pyautogui import *
 import time
 
 
 def left_click():
-    print("Hello")
-    #px = ImageGrab.grab().load()
-    #color = px[1758, 641]
-    #print(color)
+    print(random_delay(0, 2, 530) + (float(minutes.get()) * 60) +
+          (float(seconds.get())) + (float(milliseconds.get()) / 1000))
 
+
+def random_delay(minutes, seconds, millis):
+    min = randint(0, minutes)
+    sec = randint(0, seconds)
+    ms = randint(0, millis)
+    return (min*60 + sec + ms/1000)
 
 
 if __name__ == '__main__':
@@ -20,6 +24,17 @@ if __name__ == '__main__':
     button1 = Button(window, text="Start", bg="#301B3F", command=left_click)
     button1.configure(height=2, width=10, fg="#B4A5A5", activebackground="#7a49a5", activeforeground="#B4A5A5")
     button1.pack()
+
+    # declare text fields
+    milliseconds = Entry(window, bg="#301B3F", fg="#B4A5A5")
+    milliseconds.insert(0, "0")
+    milliseconds.pack()
+    seconds = Entry(window, bg="#301B3F", fg="#B4A5A5")
+    seconds.insert(0, "0")
+    seconds.pack()
+    minutes = Entry(window, bg="#301B3F", fg="#B4A5A5")
+    minutes.insert(0, "0")
+    minutes.pack()
 
     # set window title
     window.title("Goles Autoclicker")
