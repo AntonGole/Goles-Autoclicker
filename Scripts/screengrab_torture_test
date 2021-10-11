@@ -1,0 +1,5 @@
+#!C:\Users\Anton\PycharmProjects\imagereading_test\venv\Scripts\python.exe
+
+from desktopmagic.scripts.screengrab_torture_test import main
+
+main()
