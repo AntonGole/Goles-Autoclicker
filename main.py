@@ -4,6 +4,8 @@ from tkinter import *
 from tkinter import ttk
 import pickle
 import os
+import win32gui
+from desktopmagic.screengrab_win32 import getRectAsImage
 
 from PIL import ImageTk
 from pyautogui import *
@@ -37,6 +39,7 @@ def start_clicking():
 
     global double_click_delay
     double_click_delay = randint(128, 315) / 1000
+    pixel_loop()
 
     if myCombo.get() == "Left click":
         print("Clicking started")
@@ -275,6 +278,29 @@ def click_event(event):
         root.focus()
 
 
+# Special functions for RuneLite
+def look_for_green():
+    try:
+        window_handle = win32gui.FindWindow(None, "Runelite - Iron Gole")
+        window_rect = win32gui.GetWindowRect(window_handle)
+        img = getRectAsImage(window_rect)
+        pix = img.load()
+        for x in range(532, 539):
+            for y in range(85, 93):
+                if pix[530, 85] == (0, 255, 0):
+                    return True
+        return False
+    except:
+        return False
+
+
+def pixel_loop():
+    timer = threading.Timer(10, pixel_loop)
+    timer.daemon = True
+    timer.start()
+    print(look_for_green())
+
+
 if __name__ == '__main__':
     # Set global variables
     staticDelay = 0
@@ -300,19 +326,19 @@ if __name__ == '__main__':
 
     combostyle_enabled = ttk.Style()
     combostyle_enabled.theme_create('combostyle_enabled', parent='alt', settings={'TCombobox': {'configure':
-                                                                                                    {
-                                                                                                        'selectbackground': '#2d7c9d',
-                                                                                                        'selectforeground': 'black',
-                                                                                                        'fieldbackground': '#2d7c9d',
-                                                                                                        'background': '#2d7c9d',
-                                                                                                        'foreground': 'black'}}})
+        {
+            'selectbackground': '#2d7c9d',
+            'selectforeground': 'black',
+            'fieldbackground': '#2d7c9d',
+            'background': '#2d7c9d',
+            'foreground': 'black'}}})
 
     combostyle_disabled = ttk.Style()
     combostyle_disabled.theme_create('combostyle_disabled', parent='alt', settings={'TCombobox': {'configure':
-                                                                                                      {
-                                                                                                          'fieldbackground': 'grey',
-                                                                                                          'background': 'grey',
-                                                                                                          'foreground': '#404040'}}})
+        {
+            'fieldbackground': 'grey',
+            'background': 'grey',
+            'foreground': '#404040'}}})
     combostyle_enabled.theme_use('combostyle_enabled')
     myCombo = ttk.Combobox(root, width=15, value=options, state="readonly")
     myCombo.master.option_add('*TCombobox*Listbox.background', '#2d7c9d')
